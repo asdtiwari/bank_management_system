@@ -3,6 +3,7 @@
 
 void adminMenu();
 void createCustomer();
+void viewCustomerDetails();
 void deleteCustomer();
 void modifyCustomer();
 void viewAllCustomer();

@@ -2,7 +2,7 @@
 #include <windows.h>
 
 int main() {
-	const char *app = "gcc src/main.c src/admin.c src/customer.c src/transaction.c src/utils.c src/encrypt.c src/decrypt.c -Iinclude -o bin/app -Wall -g -mconsole";
+	const char *app = "gcc src/main.c src/admin.c src/customer.c src/transaction.c src/utils.c src/file_handler.c src/auth.c -Iinclude -o bin/app -Wall -g -mconsole";
 	const char *bank_management_system = "gcc src/bank_management_system.c -o bank_management_system -Wall -g -mconsole";
 
 /* 
@@ -24,7 +24,8 @@ int main() {
 		printf("Compilation Failed! Check errors above. \n");
 	}
 
-	Sleep(3000);
+	printf("\n Press Enter to exit\n");
+	getchar();
 
 	return 0;
 }

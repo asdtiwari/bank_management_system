@@ -1,10 +1,20 @@
 #ifndef CUSTOMER_H
 #define CUSTOMER_H
 
+typedef struct {
+    int accNo;
+    char name[50];
+    char password[20];
+    double balance;
+    char mobile[15];
+    char email[50];
+} Customer;
+
 void customerMenu(int accNo);
-void deposit(int accNo, double amount);
-void withdraw(int accNo, double amount);
-void transfer(int fromAcc, int toAcc, double amount);
-void viewTransaction(int accNo);
+void viewBalance(Customer *customer);
+void deposit(Customer *customer);
+void withdraw(Customer *customer);
+void transfer(Customer *sender);
+void viewTransaction(Customer *customer);
 
 #endif

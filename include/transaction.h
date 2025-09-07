@@ -1,14 +1,17 @@
 #ifndef TRANSACTION_H
 #define TRANSACTION_H
 
+#include <time.h>
+
 typedef struct {
 	int accNo;
+	char type[30]; // "CREDTI", "DEBIT", "TRANSFER_IN [acNo]", "TRANSFER_OUT [acNo]"
 	double amount;
-	char type[10]; // "CREDTI", "DEBIT", "TRANSFER"
 	char timestamp[30];
 } Transaction;
 
-void logTransaction(Transaction t);
-void showTransactionHistory(int accNo);
+int logTransaction(Transaction *txn);
+int viewTransactions(int accNo);
+int deleteCustomerTransaction(int accNo);
 
 #endif
