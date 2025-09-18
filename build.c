@@ -2,6 +2,9 @@
 #include <windows.h>
 
 int main() {
+	system("mkdir bin");
+	system("mkdir data");
+
 	const char *app = "gcc src/main.c src/admin.c src/customer.c src/transaction.c src/utils.c src/file_handler.c src/auth.c src/ui.c -Iinclude -o bin/app -Wall -g -mconsole";
 	const char *bank_management_system = "gcc src/bank_management_system.c -o bank_management_system -Wall -g -mconsole";
 
