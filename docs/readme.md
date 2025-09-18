@@ -7,12 +7,12 @@ This project demonstrates structured programming, role-based access (Admin & Cus
 
 ## 📌 Author
 **Akhilesh Tiwari**  
-📧 Email: [akhileshtiwari8033@gmail.com](mailto:akhileshtiwari8033@gmail.com) 
-🌐 GitHub: [github.com/asdtiwari](https://github.com/asdtiwari)
-📷 Instagram: [asdtiwari](https://instagram.com/asdtiwari)
-🤵 LinkedIn: [asdtiwari](https://linkedin.com/in/asdtiwari)
-💬 Twitter: [asdtiwari](https://x.com/asdtiwari)
-👤 Leetcode: [asdtiwari](https://leetcode.com/asdtiwari)
+- 📧 Email: [akhileshtiwari8033@gmail.com](mailto:akhileshtiwari8033@gmail.com) 
+- 🌐 GitHub: [github.com/asdtiwari](https://github.com/asdtiwari)
+- 🤵 LinkedIn: [asdtiwari](https://linkedin.com/in/asdtiwari)
+- 💬 Twitter: [asdtiwari](https://x.com/asdtiwari)
+- 👤 Leetcode: [asdtiwari](https://leetcode.com/asdtiwari)
+- 📷 Instagram: [asdtiwari](https://instagram.com/asdtiwari)
 
 ---
 
@@ -46,35 +46,38 @@ This project demonstrates structured programming, role-based access (Admin & Cus
 ```
 bank_management_system/
 │
-├── src/                # Source code
-│   ├── main.c          # Entry point
-│   ├── admin.c         # Admin functionalities
-│   ├── customer.c      # Customer functionalities
-│   ├── transaction.c   # Transaction logging and history
-│   ├── utils.c         # Helper functions (mask, encrypt, timestamp, UI helpers)
-│   ├── ui.c            # Homepage, About, Manual, Menus
-│   ├── auth.c          # Authentication system
-│   ├── file_handler.c  # File operations (CRUD for customers/transactions)
-│   └── build.c         # Automated compiler script
+├── src/                            # Source code
+|   ├── bank_management_system.c    # To open the program in full screen menu
+│   ├── main.c                      # Entry point
+│   ├── admin.c                     # Admin functionalities
+│   ├── customer.c                  # Customer functionalities
+│   ├── transaction.c               # Transaction logging and history
+│   ├── utils.c                     # Helper functions (mask, encrypt, timestamp, UI helpers)
+│   ├── ui.c                        # Homepage, About, Manual, Menus
+│   ├── auth.c                      # Authentication system
+│   ├── file_handler.c              # File operations (CRUD for customers/transactions)
+│   └── build.c                     # Automated compiler script
 │
-├── include/            # Header files
+├── include/                        # Header files
 │   ├── admin.h
 │   ├── customer.h
 │   ├── transaction.h
 │   ├── utils.h
 │   ├── ui.h
 │   ├── auth.h
+|   ├── role.h
 │   └── file_handler.h
 │
-├── data/               # Binary data files (auto-created at runtime)
+├── data/                           # Binary data files (auto-created at runtime)
 │   ├── customers.dat
 │   └── transactions.dat
 │
-├── bin/                # Compiled executables
+├── bin/                            # Compiled executables
 │   └── app.exe
 │
-├── build_errors.txt    # Compiler error log (auto-generated)
-└── README.md           # Project documentation
+├── build.c                         # On click compilation
+└── docs
+    └── README.md                   # Project documentation
 ```
 
 ---
