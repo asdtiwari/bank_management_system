@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "file_handler.h"
+#include "utils.h"
 
 #define DATA_FILE "data/customers.dat"
 
@@ -14,7 +15,7 @@ int saveCustomerInFile(Customer *customer) {
     return 1;
 }
 
-int loadCustomerFromFile(int accNo, Customer *customer) {
+int loadCustomerFromFile(long int accNo, Customer *customer) {
     FILE *fp = fopen(DATA_FILE, "rb"); // rb stands for read binary
     if(fp == NULL) return 0;
 
@@ -47,7 +48,7 @@ int updateCustomerInFile(Customer *customer) {
     return 0;
 }
 
-int deleteCustomerFromFile(int accNo) {
+int deleteCustomerFromFile(long int accNo) {
     FILE *fp = fopen("data/customers.dat", "rb");
     FILE *tempFp = fopen("data/temp.dat", "wb");
 
@@ -98,31 +99,36 @@ int modifyCustomerInFile(Customer *customer) {
 void viewAllCustomersFromFile() {
     system("cls"); // fresh screen
 
+    printHeader("All Account Details");
+
     FILE *fp = fopen("data/customers.dat", "rb");
     if(fp == NULL) {
-        printf("\nNo customer records found.\n");
+        refreshScreenMessage("No customer records found.");
         return;
     }
 
     Customer customer;
-    printf("\n===== All Customers =====\n");
-    printf("%10s | %-25s | %-12s | %-25s\n\n", "Acc No", "Name", "Mobile", "Email");
+
+    char* format = "%10s | %-25s | %-12s | %-25s\n\n";    
+    printf(format, "Acc No", "Name", "Mobile", "Email");
+
     while(fread(&customer, sizeof(Customer), 1, fp)) {
-        printf("%10d | %-25s | %-12s | %-25s\n", customer.accNo, customer.name, customer.mobile, customer.email);
+        printf("%10ld | %-25s | %-12s | %-25s\n", customer.accNo, customer.name, customer.mobile, customer.email);
     }
 
     fclose(fp);
 
-    printf("\nPress Enter to continue...");
-    getchar();
+    refreshScreenMessage("");
 }
 
 void viewBankStatisticsFromFile() {
     system("cls"); // fresh screen
 
+    printHeader("Bank Statistics");
+
     FILE *fp = fopen("data/customers.dat", "rb");
     if(fp == NULL) {
-        printf("\nNo customer records found.\n");
+        refreshScreenMessage("No customer records found.");
         return;
     }
 
@@ -137,10 +143,8 @@ void viewBankStatisticsFromFile() {
 
     fclose(fp);
 
-    printf("\n===== Bank Statistics =====\n");
-    printf("Total Customers : %d\n", totalCustomers);
-    printf("Total Bank Balance : %.2lf\n", totalBanlance);
+    printf("%-20s : %d\n", "Total Customers", totalCustomers);
+    printf("%-20s : %.2lf\n", "Total Bank Balance", totalBanlance);
 
-    printf("\nPress Enter to continue...");
-    getchar();
+    refreshScreenMessage("");
 }

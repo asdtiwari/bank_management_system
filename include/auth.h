@@ -4,6 +4,7 @@
 #include "customer.h"
 #include "role.h"
 
-Role authenticate(int accNo, const char *password);
+Role authenticate(long int accNo, const char *password);
+void loginScreen();
 
 #endif

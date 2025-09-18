@@ -4,14 +4,15 @@
 #include <time.h>
 
 typedef struct {
-	int accNo;
-	char type[30]; // "CREDTI", "DEBIT", "TRANSFER_IN [acNo]", "TRANSFER_OUT [acNo]"
+	long int accNo;
+	char type[30]; // "CREDTI", "DEBIT", "TRANSFER_IN", "TRANSFER_OUT"
 	double amount;
 	char timestamp[30];
 } Transaction;
 
 int logTransaction(Transaction *txn);
-int viewTransactions(int accNo);
-int deleteCustomerTransaction(int accNo);
+int viewTransactions(long int accNo);
+void viewAllTransactions();
+int deleteCustomerTransaction(long int accNo);
 
 #endif

@@ -2,7 +2,7 @@
 #define CUSTOMER_H
 
 typedef struct {
-    int accNo;
+    long int accNo;
     char name[50];
     char password[20];
     double balance;
@@ -10,11 +10,10 @@ typedef struct {
     char email[50];
 } Customer;
 
-void customerMenu(int accNo);
+void customerMenu(long int accNo);
 void viewBalance(Customer *customer);
 void deposit(Customer *customer);
 void withdraw(Customer *customer);
 void transfer(Customer *sender);
-void viewTransaction(Customer *customer);
 
 #endif

@@ -3,6 +3,7 @@
 #include <string.h>
 #include "transaction.h"
 #include "customer.h"
+#include "utils.h"
 
 #define TRANSACTION_FILE "data/transactions.dat"
 
@@ -15,39 +16,47 @@ int logTransaction(Transaction *txn) {
     return 1;
 }
 
-int viewTransactions(int accNo) {
+int viewTransactions(long int accNo) {
     system("cls");
+
+    printHeader("Transactions History");
     
     FILE *fp = fopen(TRANSACTION_FILE, "rb");
     if(fp == NULL) {
-        printf("No transaction history found. \n");
+        refreshScreenMessage("No transaction history found.");
         return 0;
     }
 
     Transaction txn;
     int found = 0;
-    printf("\n--- Transaction History ---\n");
-    printf("%-20s | %-30s | %-20s\n", "Date Time", "Type", "Amount");
+    char* format = "%-10s | %-20s | %-30s | %-20s\n";
+    printf(format, "Account No", "Date Time", "Type", "Amount");
+
     while(fread(&txn, sizeof(Transaction), 1, fp)) {
-        if(txn.accNo == accNo) {
-            printf("%-20s | %-30s | %-20.2lf\n", txn.timestamp, txn.type, txn.amount);
+        if(accNo == 0 || txn.accNo == accNo) { // accNo == 0 means admin want to see all transaction
+            printf("%-10ld | %-20s | %-30s | %-20.2lf\n", txn.accNo, txn.timestamp, txn.type, txn.amount);
             found = 1;
         }
     }
 
-    if(!found) {
-        printf("No transactions for account no %d.\n", accNo);
+    if(accNo != 0 && !found) {
+        printf("No transactions for account no %ld.\n", accNo);
+    } else if(!found) {
+        printf("No transaction is found in your bank.\n");
     }
 
     fclose(fp);
 
-    printf("\nPress Enter to continue...");
-    getchar();
+    refreshScreenMessage("");
 
     return found;
 }
 
-int deleteCustomerTransaction(int accNo) {
+void viewAllTransactions() {
+    viewTransactions(0); // 0 means everyone's account
+}
+
+int deleteCustomerTransaction(long int accNo) {
     FILE *fp = fopen(TRANSACTION_FILE, "rb");
     FILE *tempFp = fopen("data/temp.dat", "wb");
 

@@ -6,7 +6,6 @@ void createCustomer();
 void viewCustomerDetails();
 void deleteCustomer();
 void modifyCustomer();
-void viewAllCustomer();
-void viewBankStats();
+void moneyTransfer();
 
 #endif

@@ -30,3 +30,32 @@ void encryptPassword(char *password) {
         password[i] = password[i] + 1; // simple ceaser cipher shift by 1
     }
 }
+
+void printHeader(char *header) {
+    int size = strlen(header);
+    int extraTimes = size + 4;
+
+    printf("\n ");
+    for(int i = 0; i < extraTimes; ++i) {
+        printf("_");
+    }
+    printf("\n|");
+    for(int i = 0; i < extraTimes; ++i) {
+        printf(" ");
+    }
+    printf("|");
+    printf("\n|  %s  |", header);
+    printf("\n|");
+    for(int i = 0; i < extraTimes; ++i) {
+        printf("_");
+    }
+    printf("|\n\n");
+}
+
+void refreshScreenMessage(char *message) {
+    if(strlen(message) > 0) {
+        printf("\n\n%s", message);
+    }
+    printf("\n\nPress ENTER to Continue... ");
+    while(getchar() != '\n');
+}

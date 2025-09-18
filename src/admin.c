@@ -7,72 +7,27 @@
 #include "utils.h"
 #include "transaction.h"
 
-void adminMenu() {
-
-    int choice;
-    while(1) { 
-        system("cls");
-
-        printf("\n===== Admin Menu =====\n");
-        printf("1. Create New Customer\n");
-        printf("2. View Customer Details\n");
-        printf("3. Update Customer Details\n");
-        printf("4. View All Customers\n");
-        printf("5. View Bank Stats\n");
-        printf("6. Remove Customer\n");
-        printf("7. Exit Admin Menu\n");
-        printf("Enter your choice: ");
-        scanf("%d", &choice);
-        while(getchar() != '\n');
-
-        switch(choice) {
-            case 1:
-                createCustomer();               
-                break;
-
-            case 2:
-                viewCustomerDetails();
-                break;
-
-            case 3:
-                modifyCustomer();
-                break;
-
-            case 4:
-                viewAllCustomer();
-                break;
-
-            case 5:
-                viewBankStats();
-                break;
-
-            case 6:
-                deleteCustomer();
-                break;
-
-            case 7:
-                printf("Exiting Admin Menu...\n");
-                return;
-
-            default: 
-                printf("Invalid choice. Try again.\n");
-        }
-    }
-}
-
 void createCustomer() {
     system("cls"); // fresh screen
 
     Customer customer;
 
-    printf("\n==== Create New Customer =====\n");
+    printHeader("Create New Customer");
 
-    printf("Account No: ");
-    while(scanf("%d", &customer.accNo) == 0) {
-        printf("Enter valid account number");
+    printf("Account No.: ");
+    long int accNo;
+    if(scanf("%ld", &accNo) == 0 || accNo < 100000l || accNo > 9999999999l) {
         while(getchar() != '\n');
+        refreshScreenMessage("Invalid account number. It should be of 6-10 digits.");
     }
     while(getchar() != '\n');
+    customer.accNo = accNo;
+
+    Customer isExisting;
+    if(loadCustomerFromFile(customer.accNo, &isExisting) != 0) {
+        refreshScreenMessage("Account No.already taken.");
+        return;
+    }
 
     printf("Name: ");
     scanf("%[^\n]", customer.name);
@@ -84,8 +39,8 @@ void createCustomer() {
 
     printf("Initial Balance: ");
     while(scanf("%lf", &customer.balance) == 0 || customer.balance < 0) {
-        printf("Please Enter valid amount");
         while(getchar() != '\n');
+        printf("Please Enter valid amount: ");
     }
     while(getchar() != '\n');
 
@@ -103,8 +58,7 @@ void createCustomer() {
         printf("Failed to create customer.\n");
     }
 
-    printf("\nPress Enter to continue...");
-    getchar();
+    refreshScreenMessage("");
 }
 
 void viewCustomerDetails() {
@@ -112,64 +66,41 @@ void viewCustomerDetails() {
 
     Customer customer;
 
-    printf("\n--- View Customer Details ---\n");
-    printf("Enter Account No: ");
-    scanf("%d", &customer.accNo);
+    printHeader("View Customer Details");
+
+    printf("Enter Account No.: ");
+    if(scanf("%ld", &customer.accNo) == 0) {
+        while(getchar() != '\n');
+        refreshScreenMessage("Invalid input.");
+        return;
+    }
     while(getchar() != '\n');
 
     if(loadCustomerFromFile(customer.accNo, &customer)) {
-        printf("\n Account No: %d\n Name: %s\n Balance: %.2lf\n Mobile: %s\n Email: %s\n", customer.accNo, customer.name, customer.balance, customer.mobile, customer.email);
+        printf("\n%-15s: %ld \n%-15s: %s \n%-15s: %.2lf \n%-15s: %s \n%-15s: %s \n", "Account No.", customer.accNo, "Name", customer.name, "Balance", customer.balance, "Mobile", customer.mobile, "Email", customer.email);
     } else {
         printf("Customer not found.\n");
     }
 
-    printf("\nPress Enter to continue...");
-    getchar();
-}
-
-void deleteCustomer() {
-    system("cls");
-
-    int accNo;
-    printf("\n===== Delete Customer =====\n");
-    
-    printf("Enter Account Number to delete: ");
-    while(scanf("%d", &accNo) == 0) {
-        printf("Please enter valid account number\n");
-        while(getchar() != '\n');
-    }
-    while(getchar() != '\n');
-
-    
-    deleteCustomerTransaction(accNo);
-    
-    if(deleteCustomerFromFile(accNo)) {
-        printf("\n Customer deleted successfully.\n");
-    } else {
-        printf("\n Customer not found with Account No: %d\n", accNo);
-    }
-
-    printf("\nPress Enter to continue...");
-    getchar();
-    
+    refreshScreenMessage("");
 }
 
 void modifyCustomer() {
     system("cls");
 
     Customer customer;
-    printf("\n===== Modify Customer =====\n");
+    printHeader("Modify Customer");
+
     printf("Enter Account Number to modify: ");
-    while(scanf("%d", &customer.accNo) == 0) {
-        printf("Please enter valid account number\n");
+    if(scanf("%ld", &customer.accNo) == 0) {
         while(getchar() != '\n');
+        refreshScreenMessage("Invalid Acc No.");
+        return;
     }
     while(getchar() != '\n');
 
     if(!loadCustomerFromFile(customer.accNo, &customer)) {
-        printf("\n Customer not found.\n");
-        printf("\nPress Enter to continue...");
-        getchar();
+        refreshScreenMessage("Customer not found.");
         return;
     }
 
@@ -177,7 +108,7 @@ void modifyCustomer() {
     scanf("%[^\n]", customer.name);
     while(getchar() != '\n');
 
-    printf("Enter New Password: ");
+    printf("\nEnter New Password: ");
     maskPassword(customer.password);
     encryptPassword(customer.password);
 
@@ -190,19 +121,155 @@ void modifyCustomer() {
     while(getchar() != '\n');
 
     if(modifyCustomerInFile(&customer)) {
-        printf("\n Customer details modified successfully!\n");
+        printf("\nCustomer details modified successfully!\n");
     } else {
-        printf("\n Failed to modify customer.\n");
+        printf("\nFailed to modify customer.\n");
     }
 
-    printf("\nPress Enter to continue...");
-    getchar();
+    refreshScreenMessage("");
 }
 
-void viewAllCustomer() {
-    viewAllCustomersFromFile();
+void deleteCustomer() {
+    system("cls");
+
+    long int accNo;
+    printHeader("Delete Customer");
+    
+    printf("Enter Account Number to delete: ");
+    if(scanf("%ld", &accNo) == 0) {
+        while(getchar() != '\n');
+        refreshScreenMessage("Invalid Acc No.");
+        return;
+    }
+    while(getchar() != '\n');
+    
+    deleteCustomerTransaction(accNo);
+    
+    if(deleteCustomerFromFile(accNo)) {
+        printf("\nCustomer deleted successfully.\n");
+    } else {
+        printf("\nCustomer not found with Account No: %ld\n", accNo);
+    }
+
+    refreshScreenMessage("");
 }
 
-void viewBankStats() {
-    viewBankStatisticsFromFile();
+void moneyTransfer() {
+    system("cls");
+
+    long int fromAcc;
+    Customer sender;
+
+    printHeader("Money Transfer");
+
+    printf("Enter Sender Account No.: ");
+    if(scanf("%ld", &fromAcc) == 0) {
+        while(getchar() != '\n');
+        refreshScreenMessage("Invalid Account No.");
+        return;
+    }
+    while(getchar() != '\n');
+
+    if(loadCustomerFromFile(fromAcc, &sender) == 0) {
+        refreshScreenMessage("Account doesn't exists.");
+        return;
+    }
+
+    transfer(&sender);
+}
+
+void viewCustomerTransaction() {
+    system("cls");
+
+    printHeader("View All Transaction");
+
+    long int accNo;
+    printf("\nEnter Customer account No.: ");
+    if(scanf("%ld", &accNo) == 0) {
+        while(getchar() != '\n');
+        refreshScreenMessage("Invalid account No.");
+        return;
+    }
+    while(getchar() != '\n');
+
+    Customer customer;
+    if(loadCustomerFromFile(accNo, &customer) == 0) {
+        refreshScreenMessage("Account doesn't exists.");
+        return;
+    }
+
+    viewTransactions(accNo);
+}
+
+void adminMenu() {
+
+    int choice;
+    while(1) { 
+        system("cls");
+
+        printHeader("Admin Menu");
+
+        printf("1. Create New Customer\n");
+        printf("2. View Customer Details\n");
+        printf("3. Update Customer Details\n");
+        printf("4. View All Customers\n");
+        printf("5. View Bank Stats\n");
+        printf("6. Remove Customer\n");
+        printf("7. Money Transfer\n");
+        printf("8. View Customer Transaction\n");
+        printf("9. View All Transactions\n");
+        printf("10. Exit Admin Menu\n");
+        printf("\nEnter your choice: ");
+        if(scanf("%d", &choice) == 0) {
+            while(getchar() != '\n');
+            refreshScreenMessage("Invalid input.");
+            continue;
+        }
+        while(getchar() != '\n');
+
+        switch(choice) {
+            case 1:
+                createCustomer();               
+                break;
+
+            case 2:
+                viewCustomerDetails();
+                break;
+
+            case 3:
+                modifyCustomer();
+                break;
+
+            case 4:
+                viewAllCustomersFromFile();
+                break;
+
+            case 5:
+                viewBankStatisticsFromFile();
+                break;
+
+            case 6:
+                deleteCustomer();
+                break;
+
+            case 7: 
+                moneyTransfer();
+                break;
+
+            case 8:
+                viewCustomerTransaction();
+                break;
+
+            case 9:
+                viewAllTransactions();
+                break;
+
+            case 10:
+                refreshScreenMessage("Exiting Admin Menu.");
+                return;
+
+            default: 
+                refreshScreenMessage("Invalid choice.");
+        }
+    }
 }

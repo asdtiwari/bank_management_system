@@ -4,9 +4,9 @@
 #include "customer.h"
 
 int saveCustomerInFile(Customer *customer);
-int loadCustomerFromFile(int accNo, Customer *customer);
+int loadCustomerFromFile(long int accNo, Customer *customer);
 int updateCustomerInFile(Customer *customer);
-int deleteCustomerFromFile(int accNo);
+int deleteCustomerFromFile(long int accNo);
 int modifyCustomerInFile(Customer *customer);
 void viewAllCustomersFromFile();
 void viewBankStatisticsFromFile();
