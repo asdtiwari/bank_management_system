@@ -103,6 +103,7 @@ void transfer(Customer *sender) {
     if(scanf("%ld", &toAccount) == 0) {
         while(getchar() != '\n');
         refreshScreenMessage("Invalid Account number.");
+        return;
     }
     while(getchar() != '\n');
 
