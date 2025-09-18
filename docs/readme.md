@@ -47,7 +47,7 @@ This project demonstrates structured programming, role-based access (Admin & Cus
 bank_management_system/
 │
 ├── src/                            # Source code
-|   ├── bank_management_system.c    # To open the program in full screen menu
+|   ├── bank_management_system.c    # To open the program in full screen console
 │   ├── main.c                      # Entry point
 │   ├── admin.c                     # Admin functionalities
 │   ├── customer.c                  # Customer functionalities
